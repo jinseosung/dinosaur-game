@@ -30,9 +30,11 @@ class Cactus {
 
 let timer = 0;
 let cactusgroup = [];
+let jumptimer = 0;
+var animation;
 
 function eachFrame() {
-  requestAnimationFrame(eachFrame);
+  animation = requestAnimationFrame(eachFrame);
   timer++;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -48,10 +50,44 @@ function eachFrame() {
       o.splice(i, 1);
     }
     a.x--;
+
+    touch(dino, a);
+
     a.draw();
   });
+
+  if (jump == true) {
+    dino.y--;
+    jumptimer++;
+  }
+  if (jump == false) {
+    if (dino.y < 200) {
+      dino.y++;
+    }
+  }
+  if (jumptimer > 100) {
+    jump = false;
+    jumptimer = 0;
+  }
 
   dino.draw();
 }
 
 eachFrame();
+
+function touch(dino, cactus) {
+  var differencex = cactus.x - (dino.x + dino.width);
+  var differencey = cactus.y - (dino.y + dino.height);
+  if (differencex < 0 && differencey < 0) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    cancelAnimationFrame(animation);
+  }
+}
+
+var jump = false;
+
+document.addEventListener("keydown", function (event) {
+  if (event.code === "Space") {
+    jump = true;
+  }
+});
