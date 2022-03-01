@@ -29,7 +29,7 @@ class Cactus {
 }
 
 let timer = 0;
-let cactuss = [];
+let cactusgroup = [];
 
 function eachFrame() {
   requestAnimationFrame(eachFrame);
@@ -39,10 +39,14 @@ function eachFrame() {
 
   if (timer % 100 === 0) {
     var cactus = new Cactus();
-    cactuss.push(cactus);
+    cactusgroup.push(cactus);
   }
 
-  cactuss.forEach((a) => {
+  cactusgroup.forEach((a, i, o) => {
+    // if x < 0 => remove
+    if (a.x < 0) {
+      o.splice(i, 1);
+    }
     a.x--;
     a.draw();
   });
